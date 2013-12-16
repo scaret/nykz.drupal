@@ -1,1 +1,10 @@
 <?php
+/**
+ * Implements hook_enable().
+ */
+function nykz_config_enable() {
+  // 设置用户角色
+  variable_set('nykz_config_role_user', 'nykz user');
+  // 设置Server地址(没有slash)
+  variable_set('nykz_config_pyserver', 'http://nykz.net:8086');
+}

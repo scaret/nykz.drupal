@@ -17,8 +17,8 @@ function nykz_user_enable() {
  */
 function _nykz_user_create_roles() {
   $roles = array(
-    //@see nykz_config/nykz_config.install for nykz_user_role_user
-    variable_get('nykz_user_role_user', 'undefined'),
+    //@see nykz_config/nykz_config.install for nykz_config_role_user
+    variable_get('nykz_config_role_user', 'undefined'),
   );
 
   $exists = user_roles();
