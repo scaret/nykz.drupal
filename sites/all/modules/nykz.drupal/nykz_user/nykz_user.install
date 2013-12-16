@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Installation behaviors of nykz_user module.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function nykz_user_enable() {
+  _nykz_user_create_roles();
+}
+
+/**
+ * Prepare user roles for nykz.
+ */
+function _nykz_user_create_roles() {
+  $roles = array(
+    //@see nykz_config/nykz_config.install for nykz_user_role_user
+    variable_get('nykz_user_role_user', 'undefined'),
+  );
+
+  $exists = user_roles();
+
+  foreach ($roles as $name) {
+    if (!in_array($name, $exists)) {
+      $role = new stdClass();
+      $role->name = $name;
+      user_role_save($role);
+      drupal_set_message("ROLE $name has been created");
+    }
+  }
+}

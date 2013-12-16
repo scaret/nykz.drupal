@@ -1,0 +1,5 @@
+name = NYKZ Config
+description = 南洋客栈设置模块。本模块会先于所有模块启动并且不依赖于其他模块
+package = NYKZ
+core = 7.x
+version = 1.0.0

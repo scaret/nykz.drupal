@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Implements hook_enable().
+ */
+function nykz_config_enable() {
+  // 设置用户角色
+  variable_set('nykz_user_role_user', 'nykz user');
+}

@@ -1,0 +1,7 @@
+name = NYKZ User
+description = 南洋客栈用户模块
+package = NYKZ
+core = 7.x
+version = 1.0.0
+
+dependencies[] = nykz_config

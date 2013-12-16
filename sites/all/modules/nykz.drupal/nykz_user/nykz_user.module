@@ -1,0 +1,3 @@
+<?php
+
+$conf['nykz_user_role_user'] = "nykz user";
