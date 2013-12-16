@@ -13,5 +13,23 @@
   }
 
   function _nykzUser_resource_retrieve($username){
-    return nykz_user_get_uid_by_name($username);
+    $nykzuser = nykz_user_load($username);
+    if(!$nykzuser){
+      throw new Exception("User doesn't exist.");
+    }
+    else{
+      $nykzuser = $nykzuser[$username];
+      return array(
+        'userid' => $nykzuser['userid'],
+        'username' => $nykzuser['username'],
+        'gender' => $nykzuser['gender'],
+        'numlogins' => $nykzuser['numlogins'],
+        'nummails' => $nykzuser['nummails'],
+        'birthmonth' => $nykzuser['birthmonth'],
+        'birthday' => $nykzuser['birthday'],
+        'firstlogin' => $nykzuser['firstlogin'],
+        'inbank' => $nykzuser['inbank'],
+        'userlevel' => $nykzuser['userlevel'],
+      );
+    }
   }
