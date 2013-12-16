@@ -1,3 +1,61 @@
 <?php
 
 $conf['nykz_user_role_user'] = "nykz user";
+
+/*
+ * 通过南洋客栈用户名获取uid
+ * 如drupal上不存在这个用户则返回NULL
+ */
+function nykz_user_get_uid_by_name($username){
+  $account = user_load_by_name($username);
+  return $account->uid;
+}
+
+/*
+ * 判断指定用户名密码是否正确
+ * 如果正确，则返回用户信息
+ * 如果不正确，则返回0
+ */
+function nykz_user_validate($username,$pw){
+  $url = variable_get('nykz_config_pyserver')."/bbscheck?user=$username&pw=$pw";
+  $res = file_get_contents($url);
+  $arr = json_decode($res,TRUE);
+  if($arr['message'] && $arr['message']['error'] && $arr['message']['no']){
+    return FALSE;
+  }
+  elseif($arr['message'][$username]){
+    return $arr['message'];
+  }
+  else{
+    throw new Exception("pyRestful Server doesn't work!");
+  }
+}
+
+/*
+ * 创建一个用户
+ * 返回新用户的uid，或0，或抛出错误
+ */
+function nykz_user_create($username, $pw){
+  $nykzuser = nykz_user_validate($username, $pw);
+  if($nykzuser && !nykz_user_get_uid_by_name()){
+    // 创建用户
+    $rolename = variable_get('nykz_config_role_user');
+    $roles = array();
+    $roles[array_search('authenticated user', user_roles())] = 'authenticated user';
+    $roles[array_search($rolename, user_roles())] = $rolename;
+    $email = $nykzuser[$username]['email'] ? $nykzuser[$username]['email'] : $username."@nykz.net";
+    $fields = array(
+      'name' => $username,
+      'mail' => $email,
+      'pass' => $username,
+      'status' => 1,
+      'init' => $email,
+      'roles' => $roles,
+    );
+    $account = user_save('', $fields);
+    return $account->uid;
+  }
+  else{
+    return 0;
+  }
+}
