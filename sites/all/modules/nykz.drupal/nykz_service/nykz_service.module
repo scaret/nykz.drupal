@@ -49,5 +49,28 @@ function nykz_service_services_resources() {
     'access arguments' => array('create nykzUser'),
     );
 
+  $resources['nykzUser']['actions']['login'] = array(
+    'help' => 'login with user & pw',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzUser_resource'),
+    'callback' => '_nykzUser_resource_login',
+    'args' => array(
+      array(
+        'name' => 'user',
+        'optional' => FALSE,
+        'source' => array('data' => 'user'),
+        'type' => 'string',
+        'description' => 'The name of the nykz account',
+      ),
+      array(
+        'name' => 'pw',
+        'optional' => FALSE,
+        'source' => array('data' => 'pw'),
+        'type' => 'string',
+        'description' => 'The password of the nykz account',
+      ),
+    ),
+    'access arguments' => array('login nykzUser'),
+    );
+
   return $resources;
 }

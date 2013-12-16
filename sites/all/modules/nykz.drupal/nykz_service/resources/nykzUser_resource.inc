@@ -33,3 +33,13 @@
       );
     }
   }
+
+  function _nykzUser_resource_login($username,$pw){
+    $uid = nykz_user_get_uid_by_name($username);
+    if(!$uid){
+      _nykzUser_resource_create($username,$pw);
+    }
+    module_load_include('inc', 'oauth_common', 'oauth_common');
+    $ret =  nykz_user_change_key($username);
+    return $ret;
+  }
