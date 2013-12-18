@@ -4,10 +4,12 @@ package = NYKZ
 core = 7.x
 version = 1.0.0
 
-dependencies[] = nykz_config
-dependencies[] = nykz_user
 dependencies[] = services
 dependencies[] = services_oauth
 dependencies[] = rest_server
 dependencies[] = oauth_common
 dependencies[] = oauth_common_providerui
+
+dependencies[] = nykz_config
+dependencies[] = nykz_user
+dependencies[] = nykz_board

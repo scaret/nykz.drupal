@@ -72,5 +72,15 @@ function nykz_service_services_resources() {
     'access arguments' => array('login nykzUser'),
     );
 
+
+  $resources['nykzBoard'] = array('operations' => array(),'actions' => array(),);
+
+  $resources['nykzBoard']['operations']['index'] = array(
+    'help' => 'list nykzBoard',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzBoard_resource'),
+    'callback' => '_nykzBoard_resource_index',
+    'access arguments' => array('index nykzBoard'),
+    );
+
   return $resources;
 }
