@@ -82,5 +82,21 @@ function nykz_service_services_resources() {
     'access arguments' => array('index nykzBoard'),
     );
 
+  $resources['nykzBoard']['operations']['retrieve'] = array(
+    'help' => 'Retrieve a nykzBoard',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzBoard_resource'),
+    'callback' => '_nykzBoard_resource_retrieve',
+    'args' => array(
+      array(
+        'name' => 'board_name',
+        'optional' => FALSE,
+        'source' => array('path' => 0),
+        'type' => 'string',
+        'description' => 'The english name of the board',
+      ),
+    ),
+    'access arguments' => array('retrieve nykzBoard'),
+    );
+
   return $resources;
 }
