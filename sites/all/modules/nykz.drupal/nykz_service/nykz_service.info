@@ -13,3 +13,4 @@ dependencies[] = oauth_common_providerui
 dependencies[] = nykz_config
 dependencies[] = nykz_user
 dependencies[] = nykz_board
+dependencies[] = nykz_post

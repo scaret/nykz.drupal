@@ -1,0 +1,7 @@
+name = NYKZ Board
+description = 南洋客栈帖子模块
+package = NYKZ
+core = 7.x
+version = 1.0.0
+
+dependencies[] = nykz_config

@@ -1,0 +1,30 @@
+<?php
+
+
+/*
+ * 返回一个帖子
+ * 如果一个用户没有进入某个帖子所属板面的权限，则该板面不予返回
+ */
+function nykz_post_load($boardName, $filename, $format = 'novt'){
+  $post_from_pyapi = nykz_post_load_content($boardName, $filename);
+  if($format == 'raw') return $post_from_pyapi;
+  else return nykz_post_format($post_from_pyapi);
+}
+
+function nykz_post_load_content($boardName, $filename){
+  $url = variable_get('nykz_config_pyserver')."/bbspost?boardName=$boardName&filename=$filename";
+  $res = file_get_contents($url);
+  $arr = json_decode($res,TRUE);
+  if($arr['message']){
+    return $arr['message'];
+  }
+  else{
+    throw new Exception("pyRestful Server doesn't work!");
+  }
+}
+
+function nykz_post_format($raw_content){
+  $post_formated = array();
+  $board_formated['content'] = $raw_content;
+  return $board_formated;
+}
