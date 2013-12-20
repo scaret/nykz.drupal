@@ -42,7 +42,18 @@ function nykz_post_index_search_by_filename($boardName,$filename){
   }
   return FALSE;
 }
-
+function nykz_post_create($boardName, $title = NULL, $content, $username = NULL){
+  if(!$username){
+    global $user;
+    $username = $user->name;
+  }
+  if(!$title) $title = "没主题";
+  $req_body = "boardName=".urlencode($boardName)."&user=".urlencode($username).
+  "&title=".urlencode($title)."&content=".urlencode($content);
+  $url = variable_get('nykz_config_pyserver')."/bbspost";
+  $res = simple_post($url, $req_body);
+  return $res;
+}
 /*
  * 返回一个帖子
  * 如果一个用户没有进入某个帖子所属板面的权限，则该板面不予返回
@@ -103,4 +114,20 @@ function nykz_post_format($raw_content){
     }
   }
   return $board_formated;
+}
+
+function simple_post($remote_server,$post_string){
+   $ch = curl_init();
+   curl_setopt($ch,CURLOPT_URL,$remote_server);
+   curl_setopt($ch,CURLOPT_POSTFIELDS,$post_string);
+   curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+   $data = curl_exec($ch);
+   curl_close($ch);
+   $arr = json_decode($data,TRUE);
+  if($arr['message']){
+    return $arr['message'];
+  }
+  else{
+    return FALSE;
+  }
 }

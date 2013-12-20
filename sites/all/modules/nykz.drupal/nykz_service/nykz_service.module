@@ -163,5 +163,41 @@ function nykz_service_services_resources() {
     ),
     'access arguments' => array('retrieve nykzPost'),
     );
+  $resources['nykzPost']['operations']['create'] = array(
+    'help' => 'create a nykzPost',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzPost_resource'),
+    'callback' => '_nykzPost_resource_create',
+    'args' => array(
+      array(
+        'name' => 'boardname',
+        'optional' => FALSE,
+        'source' => array('path' => '0'),
+        'type' => 'string',
+        'description' => 'The english name of the board',
+      ),
+      array(
+        'name' => 'title',
+        'optional' => TRUE,
+        'source' => array('data' => 'title'),
+        'type' => 'string',
+        'description' => 'The filename',
+      ),
+      array(
+        'name' => 'content',
+        'optional' => FALSE,
+        'source' => array('data' => 'content'),
+        'type' => 'string',
+        'description' => 'The format',
+      ),
+      array(
+        'name' => 'refilename',
+        'optional' => TRUE,
+        'source' => array('data' => 'refilename'),
+        'type' => 'string',
+        'description' => 'The format',
+      ),
+    ),
+    'access arguments' => array('retrieve nykzPost'),
+    );
   return $resources;
 }
