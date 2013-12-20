@@ -1,5 +1,31 @@
 <?php
 
+function nykz_post_index($boardName,$start = 999999, $count = 20){
+  $url = variable_get('nykz_config_pyserver')."/bbspostindex?boardName=$boardName&startfrom1=$start&count=$count";
+  $res = file_get_contents($url);
+  $arr = json_decode($res,TRUE);
+  if($arr['message']['posts']){
+    $posts = $arr['message']['posts'];
+    foreach($posts as $the_post){
+      $ret[] = array(
+        'board' => $arr['message']['board'],
+        'id'    => $the_post['id'],
+        'reid'    => $the_post['reid'],
+        'index'    => $the_post['index'],
+        'filename'    => $the_post['filename'],
+        'level'    => $the_post['level'],
+        'owner'    => $the_post['owner'],
+        'title'    => $the_post['title'],
+        'pnum'    => $the_post['pnum'],
+        );
+    }
+    return $ret;
+  }
+  else{
+    throw new Exception("pyRestful Server doesn't work!");
+  }
+}
+
 
 /*
  * 返回一个帖子
@@ -26,5 +52,35 @@ function nykz_post_load_content($boardName, $filename){
 function nykz_post_format($raw_content){
   $post_formated = array();
   $board_formated['content'] = $raw_content;
+  $regex = "/^".
+    "发信人: ([a-zA-Z]{2,12}) \(([^\)]*)\), 信区: ([a-zA-Z0-9]*)\n".
+    "标  题: ([^\n]*)\n".
+    "发信站: ([^ ]*) \(([^\)]*)\)[, ]*([^\n]*)\n\n".
+    "([\d\D]*)".
+    "--\n([\d\D]*)".
+    "(\033\[1;3[0-9]m※ 来源[\d\D]*)".
+    "$/i";
+  preg_match($regex, $raw_content,$match);
+  if($match){
+    $board_formated['match'] = array_combine(array(
+      "content","author","nick","board",
+      "title",
+      "site","time","type",
+      "body",
+      "qmd",
+      "source",
+      ),$match);
+    array_shift($board_formated['match']);
+    $content_state = "content";
+    foreach(split("\n", $board_formated['match']['body']) as $line){
+      if(strpos($line, "【 在 ") === 0){
+        $content_state = "referer";
+      }
+      elseif(strpos($line, ": ") === 0){
+        $content_state = "reply";
+      }
+        $board_formated['match']['lines'][$content_state][] = $line;
+    }
+  }
   return $board_formated;
 }

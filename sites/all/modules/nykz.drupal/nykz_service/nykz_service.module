@@ -101,6 +101,38 @@ function nykz_service_services_resources() {
 
   $resources['nykzPost'] = array('operations' => array(),'actions' => array(),);
 
+  $resources['nykzPost']['operations']['index'] = array(
+    'help' => 'list nykzPost',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzPost_resource'),
+    'callback' => '_nykzPost_resource_index',
+    'args' => array(
+      array(
+        'name' => 'boardname',
+        'optional' => FALSE,
+        'source' => array('path' => '0'),
+        'type' => 'string',
+        'description' => 'The english name of the board',
+        ),
+      array(
+        'name' => 'start',
+        'optional' => TRUE,
+        'default value' => 999999,
+        'source' => array('param' => 'start'),
+        'type' => 'int',
+        'description' => 'the start tip number',
+        ),
+      array(
+        'name' => 'count',
+        'optional' => TRUE,
+        'default value' => 20,
+        'source' => array('param' => 'count'),
+        'type' => 'int',
+        'description' => 'The number of posts',
+        ),
+      ),
+    'access arguments' => array('index nykzPost'),
+    );
+
   $resources['nykzPost']['operations']['retrieve'] = array(
     'help' => 'Retrieve a nykzPost',
     'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzPost_resource'),
