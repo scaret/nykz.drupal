@@ -26,6 +26,22 @@ function nykz_post_index($boardName,$start = 999999, $count = 20){
   }
 }
 
+function nykz_post_index_search_by_filename($boardName,$filename){
+  $count = 1;
+  for($start = 99999; $start > 0; $start -= $count){
+    $post_indexes = nykz_post_index($boardName,$start,$count);
+    foreach($post_indexes as $post_index){
+      if($start > $post_index['index']){
+        $start = $post_index['index'];
+      }
+      if($post_index['filename'] == $filename){
+        return $post_index;
+      }
+    }
+    $count = $start > 50 ? 50 : $start - 1;
+  }
+  return FALSE;
+}
 
 /*
  * 返回一个帖子
@@ -34,7 +50,11 @@ function nykz_post_index($boardName,$start = 999999, $count = 20){
 function nykz_post_load($boardName, $filename, $format = 'novt'){
   $post_from_pyapi = nykz_post_load_content($boardName, $filename);
   if($format == 'raw') return $post_from_pyapi;
-  else return nykz_post_format($post_from_pyapi);
+  else{
+    $ret = nykz_post_format($post_from_pyapi);
+    $ret['index'] = nykz_post_index_search_by_filename($boardName, $filename);
+    return $ret;
+  }
 }
 
 function nykz_post_load_content($boardName, $filename){
