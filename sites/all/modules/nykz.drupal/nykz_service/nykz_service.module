@@ -23,7 +23,7 @@ function nykz_service_services_resources() {
         'description' => 'The username of the nykzUser to retrieve',
       ),
     ),
-    'access arguments' => array('retrieve nykzUser'),
+    'access callback' => '_nykz_return_true',
     );
 
   $resources['nykzUser']['operations']['create'] = array(
@@ -46,7 +46,7 @@ function nykz_service_services_resources() {
         'description' => 'The password of the nykz account',
       ),
     ),
-    'access arguments' => array('create nykzUser'),
+    'access callback' => '_nykz_return_true',
     );
 
   $resources['nykzUser']['actions']['login'] = array(
@@ -69,7 +69,7 @@ function nykz_service_services_resources() {
         'description' => 'The password of the nykz account',
       ),
     ),
-    'access arguments' => array('login nykzUser'),
+    'access callback' => '_nykz_return_true',
     );
 
 
@@ -79,7 +79,7 @@ function nykz_service_services_resources() {
     'help' => 'list nykzBoard',
     'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzBoard_resource'),
     'callback' => '_nykzBoard_resource_index',
-    'access arguments' => array('index nykzBoard'),
+    'access callback' => '_nykz_return_true',
     );
 
   $resources['nykzBoard']['operations']['retrieve'] = array(
@@ -88,14 +88,15 @@ function nykz_service_services_resources() {
     'callback' => '_nykzBoard_resource_retrieve',
     'args' => array(
       array(
-        'name' => 'board_name',
+        'name' => 'boardname',
         'optional' => FALSE,
         'source' => array('path' => 0),
         'type' => 'string',
         'description' => 'The english name of the board',
       ),
     ),
-    'access arguments' => array('retrieve nykzBoard'),
+    'access callback' => '_nykz_access_board',
+    'access arguments append' => TRUE,
     );
 
 
@@ -130,7 +131,8 @@ function nykz_service_services_resources() {
         'description' => 'The number of posts',
         ),
       ),
-    'access arguments' => array('index nykzPost'),
+    'access callback' => '_nykz_access_board',
+    'access arguments append' => TRUE,
     );
 
   $resources['nykzPost']['operations']['retrieve'] = array(
@@ -161,7 +163,8 @@ function nykz_service_services_resources() {
         'description' => 'The format',
       ),
     ),
-    'access arguments' => array('retrieve nykzPost'),
+    'access callback' => '_nykz_access_board',
+    'access arguments append' => TRUE,
     );
   $resources['nykzPost']['operations']['create'] = array(
     'help' => 'create a nykzPost',
@@ -197,7 +200,18 @@ function nykz_service_services_resources() {
         'description' => 'The format',
       ),
     ),
-    'access arguments' => array('retrieve nykzPost'),
+    'access callback' => '_nykz_access_board',
+    'access arguments append' => TRUE,
     );
   return $resources;
+}
+
+function _nykz_access_board($boardName){
+    global $user;
+    $board = nykz_board_load_multiple(array($boardName),$user->name);
+    return $board;
+}
+
+function _nykz_return_true(){
+  return TRUE;
 }
