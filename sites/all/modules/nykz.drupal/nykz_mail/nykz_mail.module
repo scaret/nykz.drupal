@@ -1,0 +1,30 @@
+<?php
+
+function nykz_mail_index($username = NULL, $start = 999999, $count = 20){
+  global $user;
+  if(!$username) $username = $user->name;
+  $url = variable_get('nykz_config_pyserver')."/bbsmailindex?user=$username&startfrom1=$start&count=$count";
+  $res = file_get_contents($url);
+  $arr = json_decode($res,TRUE);
+  if($arr['message']['mails']){
+    $mails = $arr['message']['mails'];
+    foreach($mails as $the_mail){
+      $ret[] = array(
+        'from' => reset(split($the_mail['owner'])),
+        'to' => $arr['message']['user'],
+        'id'    => $the_mail['id'],
+        'reid'    => $the_mail['reid'],
+        'index'    => $the_mail['index'],
+        'filename'    => $the_mail['filename'],
+        'level'    => $the_mail['level'],
+        'owner'    => $the_mail['owner'],
+        'title'    => $the_mail['title'],
+        'pnum'    => $the_mail['pnum'],
+        );
+    }
+    return $ret;
+  }
+  else{
+    throw new Exception("pyRestful Server doesn't work!");
+  }
+}

@@ -203,6 +203,17 @@ function nykz_service_services_resources() {
     'access callback' => '_nykz_access_board',
     'access arguments append' => TRUE,
     );
+
+
+  $resources['nykzMail'] = array('operations' => array(),'actions' => array(),);
+
+  $resources['nykzMail']['operations']['index'] = array(
+    'help' => 'list nykzMail',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzMail_resource'),
+    'callback' => '_nykzMail_resource_index',
+    'access callback' => '_nykz_return_true',
+    );
+
   return $resources;
 }
 

@@ -14,3 +14,4 @@ dependencies[] = nykz_config
 dependencies[] = nykz_user
 dependencies[] = nykz_board
 dependencies[] = nykz_post
+dependencies[] = nykz_mail
