@@ -18,7 +18,7 @@ function _nykzPost_resource_retrieve($boardName, $filename, $format = 'novt'){
 /**
  * 发表帖子
  */
-function _nykzPost_resource_create($boardName, $title, $content, $refilename){
+function _nykzPost_resource_create($boardName, $title = NULL, $content, $refilename){
   //return array($boardName, $title, $content, $refilename);
   global $user;
   $date = date("Y年m月d日 H:i:s");
@@ -35,10 +35,15 @@ function _nykzPost_resource_create($boardName, $title, $content, $refilename){
       elseif($refile['index']){
         $reauthor = $refile['index']['owner']." (".$refile['index']['owner'].")";
       }
+      if(!$title){
+        $retitle = $refile['index']['title'];
+        if(strpos("Re: ", $retitle) == 0) $title = $retitle;
+        else $title = "Re: ".$retitle;
+      }
       $content_lines = split("\n", $refile['content']);
         foreach($content_lines as $key => $line){
           if($line == "--") break;
-          if(substr($line, 0, 6) == ": : : ") continue;
+          if(strlen($line) > 250 ) continue;
           if( strlen($line) && $key > 3) $recontent .= "\n: ".$line;
         }
     }
@@ -58,12 +63,7 @@ $reply
 
 [m[1;36m※ 来源:·南洋客栈客户端[m
 EOD;
-  if(!$title && $refile){
-    $retitle = $refile['index']['title'];
-    if(strpos("Re: ", $retitle)) $retitle = $title;
-    else $title = "Re: ".$retitle;
-  }
-  $reid = $refile['index']['id'];
-  $filename = nykz_post_create($boardName, $title, $body);
+  $reid = $refile['index']['reid'];
+  $filename = nykz_post_create($boardName, $title, $body, $user->name, $reid);
   return $filename;
 }

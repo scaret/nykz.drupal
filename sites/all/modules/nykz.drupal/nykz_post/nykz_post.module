@@ -27,7 +27,7 @@ function nykz_post_index($boardName,$start = 999999, $count = 20){
 }
 
 function nykz_post_index_search_by_filename($boardName,$filename){
-  $count = 1;
+  $count = 50;
   for($start = 99999; $start > 0; $start -= $count){
     $post_indexes = nykz_post_index($boardName,$start,$count);
     foreach($post_indexes as $post_index){
@@ -38,18 +38,17 @@ function nykz_post_index_search_by_filename($boardName,$filename){
         return $post_index;
       }
     }
-    $count = $start > 50 ? 50 : $start - 1;
   }
   return FALSE;
 }
-function nykz_post_create($boardName, $title = NULL, $content, $username = NULL){
+function nykz_post_create($boardName, $title = NULL, $content, $username = NULL, $reid = NULL){
   if(!$username){
     global $user;
     $username = $user->name;
   }
   if(!$title) $title = "没主题";
   $req_body = "boardName=".urlencode($boardName)."&user=".urlencode($username).
-  "&title=".urlencode($title)."&content=".urlencode($content);
+  "&title=".urlencode($title)."&content=".urlencode($content)."&reid=$reid";
   $url = variable_get('nykz_config_pyserver')."/bbspost";
   $res = simple_post($url, $req_body);
   return $res;
