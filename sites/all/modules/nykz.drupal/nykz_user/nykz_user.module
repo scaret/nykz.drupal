@@ -70,7 +70,7 @@ function nykz_user_load($username){
     return FALSE;
   }
   elseif($arr['message'][$username]){
-    return $arr['message'];
+    return nykz_user_format($arr['message'][$username]);
   }
   else{
     throw new Exception("pyRestful Server doesn't work!");
@@ -118,4 +118,30 @@ function nykz_user_change_key($username){
     $consumer->write();
   }
   return $consumer;
+}
+
+function nykz_user_format($nykzuser){
+  $ret = array(
+    'userid' => $nykzuser['userid'],
+    'username' => $nykzuser['username'],
+    'gender' => $nykzuser['gender'],
+    'numlogins' => $nykzuser['numlogins'],
+    'nummails' => $nykzuser['nummails'],
+    'birthmonth' => $nykzuser['birthmonth'],
+    'birthday' => $nykzuser['birthday'],
+    'firstlogin' => $nykzuser['firstlogin'],
+    'inbank' => $nykzuser['inbank'],
+    'userlevel' => $nykzuser['userlevel'],
+    'userperm' => array(),
+    );
+  global $nykz_permissions;
+  $userlevel = $nykzuser['userlevel'];
+  foreach($nykz_permissions as $permission){
+    if($userlevel % 2){
+      $ret['userperm'] += $permission;
+    }
+    $userlevel >>= 1;
+  }
+
+  return $ret;
 }

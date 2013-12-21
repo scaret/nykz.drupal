@@ -8,3 +8,39 @@ function nykz_config_enable() {
   // 设置Server地址(没有slash)
   variable_set('nykz_config_pyserver', 'http://nykz.net:8086');
 }
+
+  global $nykz_permissions;
+  $nykz_permissions = array(
+        array("PERM_BASIC" => "基本权力"),  /* PERM_BASIC */
+        array("PERM_CHAT" => "进入聊天室"),        /* PERM_CHAT */
+        array("PERM_PAGE" => "呼叫他人聊天"),        /* PERM_PAGE */
+        array("PERM_POST" => "发表文章"),        /* PERM_POST */
+        array("PERM_LOGINOK" => "使用者资料正确"),     /* PERM_LOGINOK */
+        array("PERM_666LIFE" => "666生命力"),     /* PERM_666LIFE */
+        array("PERM_CLOAK" => "隐身术"),       /* PERM_CLOAK */
+        array("PERM_SEECLOAK" => "看穿隐身术"),    /* PERM_SEECLOAK */
+        array("PERM_XEMPT" => "帐号永久保留"),       /* PERM_XEMPT */
+        array("PERM_WELCOME" => "编辑进站画面"),     /* PERM_WELCOME */
+        array("PERM_BOARDS" => "板主"),      /* PERM_BOARDS */
+        array("PERM_ACCOUNTS" => "帐号管理员"),    /* PERM_ACCOUNTS */
+        array("PERM_CHATCLOAK" => "本站智囊团"),   /* PERM_CHATCLOAK */
+        array("PERM_OVOTE" => "投票管理员"),       /* PERM_OVOTE */
+        array("PERM_SYSOP" => "系统维护管理员"),       /* PERM_SYSOP */
+        array("PERM_POSTMASK" => "Read/Post 限制"),    /* PERM_POSTMASK */
+        array("PERM_HONOR" => "特殊头衔"),       /* PERM_HONOR */
+        array("PERM_OBOARDS" => "讨论区总管"),     /* PERM_OBOARDS */
+        array("PERM_ACBOARD" => "活动看板总管"),     /* PERM_ACBOARD */
+        array("PERM_NOZAP" => "不能 ZAP 讨论区"),       /* PERM_NOZAP */
+        array("PERM_FORCEPAGE" => "强制呼叫"),   /* PERM_FORCEPAGE */
+        array("PERM_EXT_IDLE" => "延长发呆时间"),    /* PERM_EXT_IDLE */
+        array("PERM_MESSAGE" => "给他人发信息"),     /* PERM_MESSAGE */
+        array("PERM_ACHATROOM" => "聊天室管理员"),   /* PERM_ACHATROOM */
+        array("PERM_LARGEMAIL" => "本站仲裁"),  /* PERM_LARGEMAIL */
+        array("PERM_MAILINFINITY" => "邮箱无上限"),        /* PERM_MAILINFINITY */
+        array("PERM_PERSONAL" => "实名Email"),    /* PERM_PERSONAL */
+        array("PERM_SPECIAL6" => "特殊权限 6"),    /* PERM_SPECIAL6 */
+        array("PERM_SPECIAL7" => "特殊权限 7"),    /* PERM_SPECIAL7 */
+        array("PERM_SPECIAL8" => "特殊权限 8"),    /* PERM_SPECIAL8 */
+        array("PERM_SPECIAL9" => "特殊权限 9"),    /* PERM_SPECIAL9 */
+        array("PERM_RECLUSION" => "特殊权限 T"),    /* PERM_RECLUSION */
+  );

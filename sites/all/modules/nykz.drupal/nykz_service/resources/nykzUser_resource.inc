@@ -18,7 +18,6 @@
       throw new Exception("User doesn't exist.");
     }
     else{
-      $nykzuser = $nykzuser[$username];
       return array(
         'userid' => $nykzuser['userid'],
         'username' => $nykzuser['username'],
@@ -30,6 +29,7 @@
         'firstlogin' => $nykzuser['firstlogin'],
         'inbank' => $nykzuser['inbank'],
         'userlevel' => $nykzuser['userlevel'],
+        'userperm' => $nykzuser['userperm'],
       );
     }
   }
