@@ -5,7 +5,7 @@
  * 返回载入的板面信息
  * 如果一个用户没有进入某个板面的权限，则该板面不予返回
  */
-function nykz_board_load_multiple($boardNames = array(), $account = NULL){
+function nykz_board_load_multiple($boardNames = array(), $username = NULL){
   variable_del("nykz_boards");
   $boards = variable_get("nykz_boards",FALSE);
   if(!$boards){
@@ -16,16 +16,16 @@ function nykz_board_load_multiple($boardNames = array(), $account = NULL){
   if(!$boardNames){
     $boardNames = array_keys($boards);
   }
-  if(!$account){
+  if(!$username){
     global $user;
-    $account = $user;
+    $username = $user->name;
   }
 
   $ret = array();
   foreach($boardNames as $boardName){
     $board = $boards[$boardName];
     if(!$board) continue;
-    if($board['board_iskboard'] && !in_array($account->name, $board['board_klist'])){
+    if($board['board_iskboard'] && !in_array($username, $board['board_klist'])){
       continue;
     }
     else{
