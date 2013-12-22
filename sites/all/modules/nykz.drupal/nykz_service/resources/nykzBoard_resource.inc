@@ -3,7 +3,14 @@
  * 列出南洋客栈板面列表
  */
 function _nykzBoard_resource_index(){
-  $boards = nykz_board_load_multiple();
+  global $user;
+  if(!isset($user) || !$user->uid){
+    $username = "guest";
+  }
+  else{
+    $username = $user->name;
+  }
+  $boards = nykz_board_load_multiple(array(), $username);
   foreach($boards as $board){
     $ret[] = array(
       'catagory_name' => $board['board_catagory_name'],
@@ -19,7 +26,14 @@ function _nykzBoard_resource_index(){
  * 列出南洋客栈板面详细信息
  */
 function _nykzBoard_resource_retrieve($board_name){
-  $boards = nykz_board_load_multiple(array($board_name));
+  global $user;
+  if(!isset($user) || !$user->uid){
+    $username = "guest";
+  }
+  else{
+    $username = $user->name;
+  }
+  $boards = nykz_board_load_multiple(array($board_name), $username);
   if(!count($boards)){
     return services_error( t("Board named $board_name not found."), 404);
   }

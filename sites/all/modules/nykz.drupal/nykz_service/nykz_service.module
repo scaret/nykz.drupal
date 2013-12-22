@@ -23,7 +23,7 @@ function nykz_service_services_resources() {
         'description' => 'The username of the nykzUser to retrieve',
       ),
     ),
-    'access callback' => '_nykz_return_true',
+    'access callback' => '_nykz_guest_perm',
     );
 
   $resources['nykzUser']['operations']['create'] = array(
@@ -46,7 +46,7 @@ function nykz_service_services_resources() {
         'description' => 'The password of the nykz account',
       ),
     ),
-    'access callback' => '_nykz_return_true',
+    'access callback' => '_nykz_guest_perm',
     );
 
   $resources['nykzUser']['actions']['login'] = array(
@@ -69,7 +69,7 @@ function nykz_service_services_resources() {
         'description' => 'The password of the nykz account',
       ),
     ),
-    'access callback' => '_nykz_return_true',
+    'access callback' => '_nykz_guest_perm',
     );
 
 
@@ -79,7 +79,7 @@ function nykz_service_services_resources() {
     'help' => 'list nykzBoard',
     'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzBoard_resource'),
     'callback' => '_nykzBoard_resource_index',
-    'access callback' => '_nykz_return_true',
+    'access callback' => '_nykz_guest_perm',
     );
 
   $resources['nykzBoard']['operations']['retrieve'] = array(
@@ -95,7 +95,7 @@ function nykz_service_services_resources() {
         'description' => 'The english name of the board',
       ),
     ),
-    'access callback' => '_nykz_access_board',
+    'access callback' => '_nykz_board_access_perm',
     'access arguments append' => TRUE,
     );
 
@@ -131,7 +131,7 @@ function nykz_service_services_resources() {
         'description' => 'The number of posts',
         ),
       ),
-    'access callback' => '_nykz_access_board',
+    'access callback' => '_nykz_board_access_perm',
     'access arguments append' => TRUE,
     );
 
@@ -163,7 +163,7 @@ function nykz_service_services_resources() {
         'description' => 'The format',
       ),
     ),
-    'access callback' => '_nykz_access_board',
+    'access callback' => '_nykz_board_access_perm',
     'access arguments append' => TRUE,
     );
   $resources['nykzPost']['operations']['create'] = array(
@@ -200,7 +200,7 @@ function nykz_service_services_resources() {
         'description' => 'The format',
       ),
     ),
-    'access callback' => '_nykz_access_board',
+    'access callback' => '_nykz_board_post_perm',
     'access arguments append' => TRUE,
     );
 
@@ -211,18 +211,38 @@ function nykz_service_services_resources() {
     'help' => 'list nykzMail',
     'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzMail_resource'),
     'callback' => '_nykzMail_resource_index',
-    'access callback' => '_nykz_return_true',
+    'access callback' => '_nykz_user_perm',
     );
 
   return $resources;
 }
 
-function _nykz_access_board($boardName){
+function _nykz_board_access_perm($boardname){
     global $user;
-    $board = nykz_board_load_multiple(array($boardName),$user->name);
+    $username = ($user && $user->uid) ? $user->name : "guest";
+    $board = nykz_board_load_multiple(array($boardname),$username);
     return $board;
 }
 
-function _nykz_return_true(){
+function _nykz_board_post_perm($boardname){
+  return _nykz_user_perm() && _nykz_board_access_perm($boardname);
+}
+
+function _nykz_guest_perm(){
   return TRUE;
 }
+
+function _nykz_user_perm(){
+  global $user;
+  if(!$user) return FALSE;
+  if(!$user->name || !$user->uid) return FALSE;
+  $username = $user->name;
+  if($username == "guest" || $username == "anonymous") return FALSE;
+  $nykzuser = nykz_user_load($username);
+  $perm = $nykzuser["userperm"];
+  if(isset($perm["PERM_POST"])){
+    return TRUE;
+  }
+  return FALSE;
+}
+
