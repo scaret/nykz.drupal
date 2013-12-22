@@ -37,7 +37,7 @@ function _nykzPost_resource_create($boardName, $title = NULL, $content, $refilen
       }
       if(!$title){
         $retitle = $refile['index']['title'];
-        if(strpos("Re: ", $retitle) == 0) $title = $retitle;
+        if(strpos("Re: ", $retitle) === 0) $title = $retitle;
         else $title = "Re: ".$retitle;
       }
       $content_lines = split("\n", $refile['content']);
