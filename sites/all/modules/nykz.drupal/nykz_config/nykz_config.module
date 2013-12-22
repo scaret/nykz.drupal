@@ -44,3 +44,5 @@ function nykz_config_enable() {
         array("PERM_SPECIAL9" => "特殊权限 9"),    /* PERM_SPECIAL9 */
         array("PERM_RECLUSION" => "特殊权限 T"),    /* PERM_RECLUSION */
   );
+  global $nykz_source_name;
+  $nykz_source_name = "南洋客栈客户端";

@@ -48,6 +48,8 @@ function _nykzPost_resource_create($boardName, $title = NULL, $content, $refilen
         }
     }
   }
+  global $nykz_source_name;
+  $ip_address = $_SERVER["REMOTE_ADDR"];
   if($recontent) $reply =<<<EOD
 【 在 $reauthor 的大作中提到: 】$recontent;
 EOD;
@@ -61,7 +63,7 @@ $reply
 
 --
 
-[m[1;36m※ 来源:·南洋客栈客户端[m
+[m[1;36m※ 来源:·$nykz_source_name nykz.net·[FROM: $ip_address][m
 EOD;
   $reid = $refile['index']['reid'];
   $filename = nykz_post_create($boardName, $title, $body, $user->name, $reid);
