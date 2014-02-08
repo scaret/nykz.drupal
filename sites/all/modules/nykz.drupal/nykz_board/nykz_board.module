@@ -7,12 +7,7 @@
  * 不填写$username会返回所有板面
  */
 function nykz_board_load_multiple($boardNames = array(), $username = NULL){
-  variable_del("nykz_boards");
-  $boards = variable_get("nykz_boards",FALSE);
-  if(!$boards){
-    nykz_board_refresh_all();
-    $boards = variable_get("nykz_boards");
-  }
+  $boards = nykz_board_refresh_all();
 
   if(!$boardNames){
     $boardNames = array_keys($boards);
@@ -22,7 +17,13 @@ function nykz_board_load_multiple($boardNames = array(), $username = NULL){
   foreach($boardNames as $boardName){
     $board = $boards[$boardName];
     if(!$board) continue;
-    if($username && $board['board_iskboard'] && !in_array($username, $board['board_klist'])){
+    if($username 
+      && $board['board_iskboard'] 
+      && !in_array($username, $board['board_klist']
+        )){
+      continue;
+    }
+    if(in_array($board['board_name'], array("syssecurity", "MoneyAdmin","TrainingAdmin","Merchant","CrossPost","CrossAdmin","cnTest","mikexy"))){
       continue;
     }
     else{
@@ -44,7 +45,6 @@ function nykz_board_refresh_all(){
     foreach($arr['message'] as $boardname => $board){
       $arr['message'][$boardname] = nykz_board_format($board);
     }
-    variable_set("nykz_boards",$arr['message']);
     return $arr['message'];
   }
   else{
@@ -63,6 +63,7 @@ function nykz_board_format($board){
   $board_formated['board_catagory_name'] = $board_title_split[1];
   $board_formated['board_chinesename'] = $board_title_split[2];
   $board_formated['board_iskboard'] = !!$board['allow'];
+  $board_formated['board_level'] = $board['level'];
   $board_formated['board_klist'] = $board['allow'];
   return $board_formated;
 }
