@@ -486,6 +486,10 @@ class RESTServer {
       return services_error('OK', 200);
     }
 
+    drupal_add_http_header('Access-Control-Allow-Origin', '*');
+    drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    drupal_add_http_header('Access-Control-Allow-Headers', 'X-CSRF-token');
+
     // We do not group "if" conditions on purpose for better readability.
 
     // 'index' method.
@@ -546,6 +550,11 @@ class RESTServer {
       $operation = 'delete';
     }
 
+    // 'CORS' hacked by scaret
+    if (   $request_method == 'OPTIONS') {
+      return services_error('OK', 200);
+    }
+
     // 'create' method.
     // First path element should be not empty.
     if (   $request_method == 'POST'
@@ -554,6 +563,7 @@ class RESTServer {
       ) {
       $operation_type = 'operations';
       $operation = 'create';
+
     }
 
     // 'actions'

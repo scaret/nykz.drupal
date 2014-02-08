@@ -44,6 +44,8 @@
     }
     module_load_include('inc', 'oauth_common', 'oauth_common');
     $ret =  nykz_user_change_key($username);
+    $info = array('name' => $username);
+    user_login_finalize($info);
     return array(
       'uid' => $ret->uid,
       'name' => $username,
