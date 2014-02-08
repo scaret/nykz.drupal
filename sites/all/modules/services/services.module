@@ -827,6 +827,9 @@ if (!function_exists('getallheaders')) {
  * Page callback to generate token.
  */
 function _services_session_token() {
+  drupal_add_http_header('Access-Control-Allow-Origin', '*');
+  drupal_add_http_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  drupal_add_http_header('Access-Control-Allow-Headers', 'X-CSRF-token');
   drupal_add_http_header('Content-Type', 'text/plain');
   print drupal_get_token('services');
   drupal_exit();
