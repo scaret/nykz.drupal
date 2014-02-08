@@ -47,7 +47,7 @@ function nykz_user_create($username, $pw){
     $fields = array(
       'name' => $username,
       'mail' => $email,
-      'pass' => $username,
+      'pass' => $pw,
       'status' => 1,
       'init' => $email,
       'roles' => $roles,
