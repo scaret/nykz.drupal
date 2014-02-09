@@ -40,7 +40,7 @@ function _nykzPost_resource_create($boardName, $title = NULL, $content, $refilen
         if(preg_match("/^Re:/i", $retitle, $matches)) $title = $retitle;
         else $title = "Re: ".$retitle;
       }
-      $content_lines = split("\n", $refile['content']);
+      $content_lines = explode("\n", $refile['content']);
         foreach($content_lines as $key => $line){
           if($line == "--") break;
           if(strlen($line) > 250 ) continue;
@@ -65,7 +65,10 @@ $reply
 
 [m[1;36m※ 来源:·$nykz_source_name nykz.net·[FROM: $ip_address][m
 EOD;
-  $reid = $refile['index']['reid'];
+  if(isset($refile) && isset($refile['index']) && isset($refile['index']['reid']))
+    $reid = $refile['index']['reid'];
+  else
+    $reid = NULL;
   $filename = nykz_post_create($boardName, $title, $body, $user->name, $reid);
   return $filename;
 }

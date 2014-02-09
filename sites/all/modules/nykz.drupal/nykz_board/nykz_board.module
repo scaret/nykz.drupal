@@ -54,14 +54,16 @@ function nykz_board_refresh_all(){
 
 function nykz_board_format($board){
   $board_formated = array();
-  $board_formated['board_bm'] = split(" ", $board['BM']);
+  $board_formated['board_bm'] = explode(" ", $board['BM']);
   $board_formated['board_name'] = $board['filename'];
   $board_formated['board_catagory'] = $board['title'][0];
-  $board_title_split = split("\[|(\] ○ )|\u0000", $board['title']);
+  $board_title_split = preg_split("/\[|(\] ○ )/", $board['title']);
   $board_formated['board_title_split'] = $board_title_split;
   $board_formated['board_catagory'] = $board_title_split[0];
   $board_formated['board_catagory_name'] = $board_title_split[1];
-  $board_formated['board_chinesename'] = $board_title_split[2];
+  if(isset($board_title_split[2])){
+    $board_formated['board_chinesename'] = $board_title_split[2];
+  }
   $board_formated['board_iskboard'] = !!$board['allow'];
   $board_formated['board_level'] = $board['level'];
   $board_formated['board_klist'] = $board['allow'];

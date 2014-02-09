@@ -102,7 +102,7 @@ function nykz_post_format($raw_content){
       ),$match);
     array_shift($board_formated['match']);
     $content_state = "content";
-    foreach(split("\n", $board_formated['match']['body']) as $line){
+    foreach(explode("\n", $board_formated['match']['body']) as $line){
       if(strpos($line, "【 在 ") === 0){
         $content_state = "referer";
       }
