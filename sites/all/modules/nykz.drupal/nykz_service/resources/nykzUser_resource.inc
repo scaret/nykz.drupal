@@ -12,6 +12,13 @@
     }
   }
 
+  function _nykzUser_resource_index(){
+    global $user;
+    if($user->uid){
+      return _nykzUser_resource_retrieve($user->name);
+    }
+  }
+
   function _nykzUser_resource_retrieve($username){
     $nykzuser = nykz_user_load($username);
     if(!$nykzuser){

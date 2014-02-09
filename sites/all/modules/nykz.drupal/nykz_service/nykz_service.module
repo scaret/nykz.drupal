@@ -10,6 +10,13 @@ function nykz_service_services_resources() {
 
   $resources['nykzUser'] = array('operations' => array(),'actions' => array(),);
 
+  $resources['nykzUser']['operations']['index'] = array(
+    'help' => 'who am i',
+    'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzUser_resource'),
+    'callback' => '_nykzUser_resource_index',
+    'access callback' => '_nykz_guest_perm',
+    );
+
   $resources['nykzUser']['operations']['retrieve'] = array(
     'help' => 'Retrieve a nykzUser',
     'file' => array('type' => 'inc','module' => 'nykz_service','name' => 'resources/nykzUser_resource'),
