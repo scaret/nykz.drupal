@@ -51,7 +51,7 @@ function _nykzPost_resource_create($boardName, $title = NULL, $content, $refilen
   global $nykz_source_name;
   $ip_address = $_SERVER["REMOTE_ADDR"];
   if($recontent) $reply =<<<EOD
-【 在 $reauthor 的大作中提到: 】$recontent;
+【 在 $reauthor 的大作中提到: 】$recontent
 EOD;
   $body =<<<EOD
 发信人: $user->name ($user->name), 信区: $boardName
