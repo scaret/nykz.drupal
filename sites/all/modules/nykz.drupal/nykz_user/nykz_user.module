@@ -20,7 +20,7 @@ function nykz_user_validate($username,$pw){
   $url = variable_get('nykz_config_pyserver')."/bbscheck?user=$username&pw=$pw";
   $res = file_get_contents($url);
   $arr = json_decode($res,TRUE);
-  if($arr['message'] && $arr['message']['error'] && $arr['message']['no']){
+  if(isset($arr['message']) && isset($arr['message']['error']) && isset($arr['message']['no'])){
     return FALSE;
   }
   elseif($arr['message'][$username]){
