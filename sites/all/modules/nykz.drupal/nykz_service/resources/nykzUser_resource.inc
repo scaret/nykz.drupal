@@ -56,7 +56,9 @@
     // login the user in drupal
     global $user;
     $account = user_load_by_name($username);
-    $user = $account;
+
+    $form_submit = array('uid' => $account->uid);
+    user_login_submit(array(), $form_submit);
 
     return array(
       'uid' => $ret->uid,
